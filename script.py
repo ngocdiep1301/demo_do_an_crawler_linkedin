@@ -98,12 +98,12 @@ for page in range(int(page_number)):
 
 # thu thập dữ liệu của 1 hồ sơ Linkedin và ghi dữ liệu vào tệp .CSV
 with open('profile_output.csv', 'w',  newline = '') as file_output:
-    headers = ['Ten ung vien', 'Hoc van', 'Cong viec hien tai', 'Cong ty hien tai', 'Thoi gian lam viec', 'Noi lam viec', 'Link tai khoan']
+    headers = ['Tên ứng viên', 'Học vấn', 'Công việc hiện tại', 'Công ty hiện tại', 'Thời gian làm việc', 'Nơi làm việc', 'Link tài khoản']
     writer = csv.DictWriter(file_output, delimiter=',', lineterminator='\n',fieldnames=headers)
     writer.writeheader()
     for linkedin_URL in URLs_all_page:
         driver.get(linkedin_URL)
-        print('- Truy cap ho so: ', linkedin_URL)
+        print('- Truy cập hồ sơ: ', linkedin_URL)
         sleep(2)
         page_source = BeautifulSoup(driver.page_source, "html.parser")
         info = page_source.find('div',{'class':'display-flex justify-space-between pt2'})
@@ -112,20 +112,20 @@ with open('profile_output.csv', 'w',  newline = '') as file_output:
         info_experience = page_source.find('div', {'class':'pv-entity__summary-info pv-entity__summary-info--background-section'})
         try:
             name_people = info.find('h1', class_='text-heading-xlarge inline t-24 v-align-middle break-words').get_text().strip()
-            print('--- Ten ung vien: ', name_people)
+            print('--- Tên ứng viên: ', name_people)
             college = info_college.find('h3', class_='pv-entity__school-name t-16 t-black t-bold').get_text().strip()
-            print('--- Hoc van: ', college)
+            print('--- Học vấn: ', college)
             position = info_experience.find('h3', class_='t-16 t-black t-bold').get_text().strip()
-            print('--- Cong viec hien tai: ', position)
+            print('--- Công việc hiện tại: ', position)
             # company = info_company.find('div', class_='inline-show-more-text inline-show-more-text--is-collapsed inline-show-more-text--is-collapsed-with-line-clamp').get_text().strip()
             # print('--- Công ty hiện tại: ', company)
             # experience
             company = info_experience.find('p', class_='pv-entity__secondary-title t-14 t-black t-normal').get_text().strip()
-            print('--- Cong ty hien tai: ', company)
+            print('--- Công ty hiện tại: ', company)
             time_work_at_company = info_experience.find('span', class_='pv-entity__bullet-item-v2').get_text().strip()
-            print('--- Thoi gian lam viec: ', time_work_at_company)   
+            print('--- Thời gian làm việc: ', time_work_at_company)   
             location = info.find('span', class_='text-body-small inline t-black--light break-words').get_text().strip()
-            print('--- Noi lam viec: ', location)
+            print('--- Nơi làm việc: ', location)
 
             writer.writerow({
                     headers[0]:name_people,
@@ -142,4 +142,4 @@ with open('profile_output.csv', 'w',  newline = '') as file_output:
             pass
 
 # nhiệm vụ hoàn thành
-print('Done!')
+print('Xong!')
